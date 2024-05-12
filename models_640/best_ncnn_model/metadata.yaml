@@ -1,0 +1,19 @@
+description: Ultralytics best model trained on data.yaml
+author: Ultralytics
+date: '2024-05-12T12:47:16.660196'
+version: 8.2.10
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 640
+- 640
+names:
+  0: Apron
+  1: Bunny Suit
+  2: Gas mask
+  3: Gloves
+  4: Goggles
+  5: Head Cap

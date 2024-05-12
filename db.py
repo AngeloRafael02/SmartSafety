@@ -3,6 +3,10 @@ import psycopg2.extras
 import psycopg2
 import os
 
+# only for testing
+import datetime
+import time
+
 load_dotenv()
 def connect():
     conn = psycopg2.connect(
@@ -37,3 +41,11 @@ def upload_metadata(filename:str, fileURL:str,hostName_id:int, datetime, object:
         #Reconnect
         conn = connect()
         conn.cursor()
+
+# for debugging modules
+if __name__ == '__main__':
+    Stime = time.time()
+    ## Put Function to test Here
+    upload_metadata("picture.jpg","test1/picture.jpg",2, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),1)
+    Etime = time.time()
+    print(f"Execution time: {Etime-Stime} seconds")

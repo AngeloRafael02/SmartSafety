@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 import subprocess
 import os
 
+import time # for speed tests
+
 load_dotenv()
 
 def mkdirSamba(folder_name:str):
@@ -33,13 +35,24 @@ def checkDir(folder:str)->bool:
         result = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         stdout, stderr = result.communicate()
         print(str(stdout), str(stderr))
-        
+
         if 'NT_STATUS_OBJECT_NAME_NOT_FOUND' in str(stdout):
             return False # Directory Not Found
         elif 'NT_STATUS_OBJECT_PATH_NOT_FOUND' in str(stdout):
+            return False # Path Not Found
+        elif 'NT_STATUS_IO_TIMEOUT' in str(stdout):
             return False # Path Not Found
         else:
             return True # Directory Found
     except Exception as e:
         print(f"Error: {e}")
         return False
+
+# for debugging modules 
+if __name__ == '__main__':
+   Stime = time.time()
+   ## Put Function to test Here
+   #putSamba('screenshots/dog.jpg','test1/dog.jpg')
+   #checkDir("test3")
+   Etime = time.time()
+   print(f"Execution time: {Etime-Stime} seconds")

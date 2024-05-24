@@ -23,7 +23,7 @@ def generate_frames():
             break
         else:
             # Run object detection on the frame
-            results = model.predict(frame)  # Perform detection
+            results = model.predict(frame, conf=0.6, iou=0.8, imgsz=640, half=True, max_det=10, stream_buffer=False, agnostic_nms=True)  # Perform detection
             # Draw bounding boxes and labels on the frame 
             detected_frame = results[0].plot()  # This renders the detections
 

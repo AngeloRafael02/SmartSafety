@@ -6,11 +6,13 @@ import cv2
 app = Flask(__name__)
 
 # Open the webcam (usually, 0 for the default camera, 1 for additional ones)
-camera = cv2.VideoCapture('rtsp://admin:Angelorafael69@192.168.1.99:554/Streaming/channels/101/')
+camera = cv2.VideoCapture("rtspsrc location=rtsp://admin:Angelorafael69@192.168.1.99:554/Streaming/channels/101/ short-header=True buffer-mode=0 do-rtsp-keep-alive=True is-live=True onvif-rate-control=False onvif-mode=True drop-on-latency=True latency=0 ! rtph265depay ! h265parse ! avdec_h265 output-corrupt=False skip-frame=5 thread-type=Frame ! videoconvert ! appsink drop=1", cv2.CAP_GSTREAMER)
+#camera = cv2.VideoCapture("rtsp://admin:Angelorafael69@192.168.1.99:554/Streaming/channels/101/", cv2.CAP_FFMPEG)
 # reduce buffer size
 camera.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
-model = YOLO('models/best_int8_openvino_model/')
+#model = YOLO('models_800/best_int8_openvino_model/')
+model = YOLO('models_640/best_ncnn_model/')
 
 def generate_frames():
 

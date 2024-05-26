@@ -52,7 +52,5 @@ def checkDir(folder:str)->bool:
 if __name__ == '__main__':
    Stime = time.time()
    ## Put Function to test Here
-   #putSamba('screenshots/dog.jpg','test1/dog.jpg')
-   #checkDir("test3")
    Etime = time.time()
    print(f"Execution time: {Etime-Stime} seconds")

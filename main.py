@@ -1,4 +1,4 @@
-from flask import Flask, Response, render_template
+from flask import Flask, Response, render_template, send_from_directory
 from dotenv import load_dotenv
 from ultralytics import YOLO
 import datetime
@@ -6,6 +6,7 @@ import time
 import cv2
 import subprocess
 
+import numpy as np
 import db
 import fs
 import threading
@@ -13,6 +14,8 @@ import socket
 import signal
 import sys
 import os
+
+SAMBA_MOUNT_POINT = '/mnt/samba'
 
 load_dotenv()
 # Crete temporary directory for screenshots
@@ -63,6 +66,7 @@ def generate_frames():
 
             # Draw bounding boxes and labels on the frame
             detected_frame = results[0].plot()  # This renders the detections
+            print(results[0].boxes.cls.numpy())
 
             # Convert the frame to JPEG format
             ret, buffer = cv2.imencode('.jpg', detected_frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
@@ -83,7 +87,10 @@ def take_screenshot(results):
     fileName = screenshot_fileLoc[len('screenshots/'):-len('.jpg')]
 
     #Create an array storing the frequencies of objects,
+    completeArr=[0,1,2,3,3,4,5]
     classArray = results[0].boxes.cls.numpy().copy()
+    notFoundArr = np.setdiff1d(np.array(completeArr),np.array(classArray)).tolist()
+    print("NOTFound" + str(notFoundArr))
 
     # Temporarily stores screenshot to local directory
     cv2.imwrite(screenshot_fileLoc, results[0].plot())
@@ -91,14 +98,15 @@ def take_screenshot(results):
 
     # Make Directory/Path if not Found
     if fs.checkDir(currentFolder) == False:
+        fs.mkdirSamba(dateFolder)
         fs.mkdirSamba(currentFolder)
-        time.sleep(1)
+        time.sleep(0.5)
     # Add screenshot to File Server
-    fs.putSamba(screenshot_fileLoc, f'{newURL}/{screenshot_fileLoc}')
+    fs.putSamba(screenshot_fileLoc, f'{newURL}/{screenshot_fileLoc[len("screenshots/"):]}')
 
     # Add screenshot metadata to Database
-    for value in classArray:
-        db.upload_metadata(fileName, newURL, os.getenv('HOSTNAME_ID'),datetime.datetime.now(), int(value))
+    for value in notFoundArr:
+        db.upload_metadata(fileName, newURL, os.getenv('HOSTNAME_ID'),datetime.datetime.now(), int(value + 1))
 
     # Delete Excess Photos from temp directory
     try:
@@ -130,8 +138,6 @@ def cleanup():
     sys.exit(0)
 
 
-
-
 @app.route('/')
 def index():
     # A simple HTML page with an embedded video stream
@@ -143,11 +149,62 @@ def video_feed():
     return Response(generate_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/updates')
+def logs():
+    conn = db.connect()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM undetected_items WHERE detectedobject='apron' ORDER BY dateandtime DESC;")
+    data1 = cur.fetchall()
+    cur.execute("SELECT * FROM undetected_items WHERE detectedobject='bunny suit' ORDER BY dateandtime DESC;")
+    data2 = cur.fetchall()
+    cur.execute("SELECT * FROM undetected_items WHERE detectedobject='mask' ORDER BY dateandtime DESC;")
+    data3 = cur.fetchall()
+    cur.execute("SELECT * FROM undetected_items WHERE detectedobject='gloves' ORDER BY dateandtime DESC;")
+    data4 = cur.fetchall()
+    cur.execute("SELECT * FROM undetected_items WHERE detectedobject='goggles' ORDER BY dateandtime DESC;")
+    data5 = cur.fetchall()
+    cur.execute("SELECT * FROM undetected_items WHERE detectedobject='headcap' ORDER BY dateandtime DESC;")
+    data6 = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    # A simple HTML page with an embedded video stream
+    return render_template('updates.html', data1=data1, data2=data2, data3=data3, data4=data4, data5=data5, data6=data6)
+
+@app.route('/logs')
+def update():
+    conn = db.connect()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM undetected_items WHERE detectedobject='apron' ORDER BY dateandtime DESC LIMIT 15;")
+    data1 = cur.fetchall()
+    cur.execute("SELECT * FROM undetected_items WHERE detectedobject='bunny suit' ORDER BY dateandtime DESC LIMIT 15;")
+    data2 = cur.fetchall()
+    cur.execute("SELECT * FROM undetected_items WHERE detectedobject='mask' ORDER BY dateandtime DESC LIMIT 15;")
+    data3 = cur.fetchall()
+    cur.execute("SELECT * FROM undetected_items WHERE detectedobject='gloves' ORDER BY dateandtime DESC LIMIT 15;")
+    data4 = cur.fetchall()
+    cur.execute("SELECT * FROM undetected_items WHERE detectedobject='goggles' ORDER BY dateandtime DESC LIMIT 15;")
+    data5 = cur.fetchall()
+    cur.execute("SELECT * FROM undetected_items WHERE detectedobject='headcap' ORDER BY dateandtime DESC LIMIT 15;")
+    data6 = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('contents2.html', data1=data1, data2=data2, data3=data3, data4=data4, data5=data5, data6=data6)
+
+@app.route('/images/<path:filename>')
+def serve_image(filename):
+    print(SAMBA_MOUNT_POINT + currentFolder, filename + ".jpg")
+    return send_from_directory(SAMBA_MOUNT_POINT + "/" + currentFolder, filename + ".jpg")
+
 # Run the Flask app
 if __name__ == '__main__':
     signal.signal(signal.SIGTERM, cleanup)
-    currentFolder = f'{datetime.datetime.now().strftime("%Y-%m-%d")}/{socket.gethostname()}'
+    dateFolder = datetime.datetime.now().strftime("%Y-%m-%d")
+    hostFolder = socket.gethostname()
+    currentFolder = f'{dateFolder}/{hostFolder}'
     try:
-        app.run(debug=True, threaded=True, host='0.0.0.0', port=3000)
+        fs.mkdirSamba(dateFolder)
+        fs.mkdirSamba(currentFolder)
+        app.run(debug=True, threaded=True, host='0.0.0.0',load_dotenv=True, port=3000)
     except KeyboardInterrupt:
         pass

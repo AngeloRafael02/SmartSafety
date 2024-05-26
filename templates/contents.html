@@ -1,0 +1,157 @@
+<!--APRON-->
+<div id="content1">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>File name</th>
+                <th>Hostname</th>
+                <th>Date & Time</th>
+                <th>Undetected Object</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data1 %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td><a href="{{ 'images/' + row[1] | urlencode }}">{{ row[1] }}</a></td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[4].strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ row[5] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!--BUNNY SUIT-->
+<div id="content2" style="display: none;">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>File name</th>
+                <th>Hostname</th>
+                <th>Date & Time</th>
+                <th>Undetected Object</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data2 %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td><a href="{{ 'images/' + row[1] | urlencode }}">{{ row[1] }}</a></td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[4].strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ row[5] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!--MASK-->
+<div id="content3"  style="display: none;">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>File name</th>
+                <th>Hostname</th>
+                <th>Date & Time</th>
+                <th>Undetected Object</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data3 %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td><a href="{{ 'images/' + row[1] | urlencode }}">{{ row[1] }}</a></td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[4].strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ row[5] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!--GLOVES-->
+<div id="content4"  style="display: none;">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>File name</th>
+                <th>Hostname</th>
+                <th>Date & Time</th>
+                <th>Undetected Object</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data4 %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td><a href="{{ 'images/' + row[1] | urlencode }}">{{ row[1] }}</a></td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[4].strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ row[5] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!--GOGGLES-->
+<div id="content5"  style="display: none;">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>File name</th>
+                <th>Hostname</th>
+                <th>Date & Time</th>
+                <th>Undetected Object</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data5 %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td><a href="{{ 'images/' + row[1] | urlencode }}">{{ row[1] }}</a></td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[4].strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ row[5] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<!--HEADCAP-->
+<div id="content6"  style="display: none;">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>File name</th>
+                <th>Hostname</th>
+                <th>Date & Time</th>
+                <th>Undetected Object</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data6 %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td><a href="{{ 'images/' + row[1] | urlencode }}">{{ row[1] }}</a></td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[4].strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ row[5] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+

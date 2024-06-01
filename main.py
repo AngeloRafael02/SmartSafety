@@ -1,4 +1,4 @@
-from flask import Flask, Response, render_template, send_from_directory
+from flask import Flask, Response, render_template, send_from_directory, request, jsonify
 from dotenv import load_dotenv
 from ultralytics import YOLO
 import datetime
@@ -138,10 +138,19 @@ def cleanup():
     sys.exit(0)
 
 
-@app.route('/')
+@app.route('/',methods=['GET', 'POST'] )
 def index():
-    # A simple HTML page with an embedded video stream
-    return render_template('index.html')
+    if request.method == 'GET':
+        # A simple HTML page with an embedded video stream
+        return render_template('index.html')
+    elif request.method == 'POST':
+        data = request.json
+        # Process the received data
+        print(data)
+        return render_template('index.html',data=data), 200
+    else:
+        # Handle unexpected HTTP methods
+        return jsonify({'status': 'failure'}), 405
 
 @app.route('/video_feed')
 def video_feed():

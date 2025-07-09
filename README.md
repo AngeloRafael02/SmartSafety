@@ -8,7 +8,7 @@ Proof of concept using YOLOv8 for Object Detection, specifically in detecting Pe
 ![plot](./photo-collage.png(2).png)
 
 ## DISCLAIMER
-The Model may have been 'overfitted' in some sense since we trained and validated the model with the same PPE equipment throughout the system's Development Phase, this repo/project is merely the proof of concept to show the effectiveness of using Machine Vision and Deep Learning to create a system that can detect if workers are using PPEs.
+This repo/project is merely a proof of concept to show the effectiveness of using Machine Vision and Deep Learning to create a system that can detect if workers are using PPE and is not to be deployed in an actual setting.
 
 ## Benchmarks
 

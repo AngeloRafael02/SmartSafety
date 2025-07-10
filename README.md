@@ -23,3 +23,33 @@ This repo/project is merely a proof of concept to show the effectiveness of usin
 
 ### Normalised Confusion Matrix
 ![plot](./benchmarks/confusion_matrix_normalized%20(1).png)
+
+## Hardware Requirements:
+- Raspberry Pi (preferably Pi 5, or newer for better performance
+- SD card with Raspberry Pi OS installed
+- CCTV Camera with RTSP protocol support
+- Ethernet Cables
+- Router 
+
+## Software Requirements:
+- Python 3.x: Ensure you have Python 3 installed.
+- pip: Python package installer.
+- Other Python Libraries: Refer to requirements.txt for a complete list.
+
+## Installation Steps:
+- Clone the repository:
+```
+git clone https://github.com/YOUR_USERNAME/ppe-detection-rpi.git
+cd ppe-detection-rpi
+```
+- Create a virtual environment (recommended):
+
+python3 -m venv venv
+source venv/bin/activate
+
+Install dependencies:
+```
+pip install -r requirements.txt
+```
+Note: Some dependencies, like OpenCV, might require additional system-level packages on Raspberry Pi. Refer to their official documentation if you encounter issues.
+
